@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_labs_17520126/personal_salary.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,6 +40,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final nameController = TextEditingController();
+  final grossSalaryController = TextEditingController();
+  List<PersonalSalary> listPersonalSalary = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,134 +52,66 @@ class _MyHomePageState extends State<MyHomePage> {
           widget.title,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Row"),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Container(
-                  height: 80,
-                  width: 80,
-                  color: Colors.redAccent,
-                ),
-                Container(
-                  height: 80,
-                  width: 80,
-                  color: Colors.yellowAccent,
-                ),
-                Container(
-                  height: 80,
-                  width: 80,
-                  color: Colors.greenAccent,
-                ),
-              ],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 16),
+          TextField(
+            controller: nameController,
+            decoration: const InputDecoration(
+              labelText: "Name",
+              border: OutlineInputBorder(),
             ),
-            const SizedBox(height: 8),
-            const Text("Column"),
-            const SizedBox(height: 8),
-            Column(
-              children: [
-                Container(
-                  height: 80,
-                  width: 80,
-                  color: Colors.redAccent,
-                ),
-                Container(
-                  height: 80,
-                  width: 80,
-                  color: Colors.yellowAccent,
-                ),
-                Container(
-                  height: 80,
-                  width: 80,
-                  color: Colors.greenAccent,
-                ),
-              ],
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: grossSalaryController,
+            decoration: const InputDecoration(
+              labelText: "Gross Salary",
+              border: OutlineInputBorder(),
             ),
-            const SizedBox(height: 8),
-            const Text("ListView"),
-            const SizedBox(height: 8),
-            Container(
-              height: 200,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 80,
-                    width: 80,
-                    color: getColorIndex(index),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text("GridView"),
-            const SizedBox(height: 8),
-            GridView.count(
-              primary: false,
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(20),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              crossAxisCount: 2,
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.teal[100],
-                  child: const Text("He'd have you all unravel at the"),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.teal[200],
-                  child: const Text('Heed not the rabble'),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.teal[300],
-                  child: const Text('Sound of screams but the'),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.teal[400],
-                  child: const Text('Who scream'),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.teal[500],
-                  child: const Text('Revolution is coming...'),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.teal[600],
-                  child: const Text('Revolution, they...'),
-                ),
-              ],
-            )
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          OutlinedButton(
+            onPressed: handleListPersonal,
+            child: const Text("Calculate"),
+          ),
+          const Divider(
+            color: Colors.black,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: listPersonalSalary.length,
+            itemBuilder: (context, index) {
+              return personSalWidget(listPersonalSalary[index]);
+            },
+          )
+        ],
       ),
     );
   }
 
-  Color getColorIndex(int index) {
-    switch (index) {
-      case 0:
-        return Colors.redAccent;
-      case 1:
-        return Colors.yellowAccent;
-      case 2:
-        return Colors.greenAccent;
-      case 3:
-        return Colors.blueAccent;
-      case 4:
-        return Colors.pinkAccent;
-      default:
-        return Colors.black12;
-    }
+  Widget personSalWidget(PersonalSalary per) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(per.fullName ?? ""),
+        const Text(": "),
+        Text("${per.netSalary}"),
+      ],
+    );
+  }
+  void handleListPersonal() {
+    final newPersonalSal = PersonalSalary(
+      fullName: nameController.text,
+      grossSalary: int.parse(grossSalaryController.text),
+    );
+
+    setState(() {
+      listPersonalSalary.add(newPersonalSal);
+      nameController.clear();
+      grossSalaryController.clear();
+    });
   }
 }
