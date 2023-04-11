@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Mobile Labs 01'),
+      home: const MyHomePage(title: 'Mobile Labs 02'),
     );
   }
 }
@@ -54,28 +54,53 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
+          const Text(
+            "Full Name",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 8),
           TextField(
             controller: nameController,
             decoration: const InputDecoration(
-              labelText: "Name",
+              labelText: "Please enter full name",
               border: OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 16),
+          const Text(
+            "Gross Salary",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 8),
           TextField(
             controller: grossSalaryController,
             decoration: const InputDecoration(
-              labelText: "Gross Salary",
+              labelText: "Please enter gross salary",
               border: OutlineInputBorder(),
             ),
           ),
           const SizedBox(height: 16),
-          OutlinedButton(
-            onPressed: handleListPersonal,
-            child: const Text("Calculate"),
+          Align(
+            alignment: Alignment.center,
+            child: OutlinedButton(
+              onPressed: handleListPersonal,
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+              ),
+              child: const Text(
+                "Calculate",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ),
           const Divider(
             color: Colors.black,
@@ -93,15 +118,36 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget personSalWidget(PersonalSalary per) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(per.fullName ?? ""),
-        const Text(": "),
-        Text("${per.netSalary}"),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            per.fullName ?? "",
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const Text(" - "),
+          const Text(
+            " Net Salary:  ",
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+          Text(
+            "${per.netSalary}",
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ],
+      ),
     );
   }
+
   void handleListPersonal() {
     final newPersonalSal = PersonalSalary(
       fullName: nameController.text,
